@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style03.css">
+    <title>note app</title>
+</head>
+<body>
+    <div class="container">
+        <h1><img src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3JtNTM1LWJvb2syLTA3YS5wbmc.png" alt="">Notes</h1>
+        <button class="btn"><img src="https://png.pngtree.com/png-vector/20190223/ourmid/pngtree-vector-edit-icon-png-image_695419.jpg" alt="">Create Notes</button>
+        <div class="notes-container">
+           
+        </div>
+    </div>
+
+    <script>
+        const notesContainer = document.querySelector(".notes-container");
+        const createBtn = document.querySelector(".btn");
+        let notes = document.querySelectorAll(".input-box");
+
+        function showNotes(){
+            notesContainer.innerHTML = localStorage.getItem("notes");
+        }
+        showNotes();
+
+        function updateStorage(){
+            localStorage.setItem("notes", notesContainer.innerHTML);
+        }
+
+        createBtn.addEventListener("click", ()=>{
+            let inputBox = document.createElement("p");
+            let img = document.createElement("img");
+            inputBox.className = "input-box";
+            inputBox.setAttribute("contenteditable", "true");
+            img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUXgYrrGI4SkJOmyibFe9eh3h9npqXlnkCYA&usqp=CAU";
+            notesContainer.appendChild(inputBox).appendChild(img);
+            updateNotes();
+
+        })
+
+        function updateNotes() {
+            const notes = document.querySelectorAll(".input-box");
+            notes.forEach(nt => {
+                nt.onkeyup = function(){
+                    updateStorage();
+                }
+            })
+        }
+        
+        notesContainer.addEventListener("click", function(e){
+            if(e.target.tagName === "IMG"){
+                e.target.parentElement.remove();
+                updateStorage();
+            }
+            else if(e.target.tagName === "p"){
+                notes = document.querySelectorAll(".input-box");
+                notes.forEach(nt => {
+                    nt.onkeyup = function(){
+                        updateStorage();
+                    }
+                })
+            }
+        })
+    </script>
+</body>
+</html>
